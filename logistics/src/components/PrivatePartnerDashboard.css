@@ -1,0 +1,24 @@
+.private-partner-dashboard {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    color: #333;
+  }
+  
+  .private-partner-dashboard h1 {
+    font-size: 32px;
+    color: #007bff;
+  }
+  
+  .private-partner-dashboard p {
+    font-size: 18px;
+  }
+  
+  .location-section {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  

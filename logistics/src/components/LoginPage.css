@@ -1,0 +1,127 @@
+/* Container for the entire login page */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #007bff, #6a11cb);
+    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+  }
+  
+  /* Styling for the login form container */
+  .login-form {
+    background-color: white;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Add hover effect on the login form */
+  .login-form:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Form title styling */
+  .login-form h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  /* Input field styling */
+  .login-form input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Input focus effect */
+  .login-form input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    outline: none;
+    background-color: #fff;
+  }
+  
+  /* Dropdown select field styling */
+  .login-form select {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Select focus effect */
+  .login-form select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    outline: none;
+    background-color: #fff;
+  }
+  
+  /* Button styling */
+  .login-form button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  /* Hover effect for the login button */
+  .login-form button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+  }
+  
+  /* Error message styling */
+  .login-form p {
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+  
+  /* Responsive styling for smaller screens */
+  @media (max-width: 768px) {
+    .login-form {
+      padding: 30px;
+      max-width: 90%;
+    }
+  
+    .login-form h2 {
+      font-size: 24px;
+    }
+  
+    .login-form input,
+    .login-form select {
+      padding: 12px;
+      font-size: 14px;
+    }
+  
+    .login-form button {
+      padding: 12px;
+      font-size: 14px;
+    }
+  }
+  

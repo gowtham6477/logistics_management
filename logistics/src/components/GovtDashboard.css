@@ -1,0 +1,24 @@
+.govt-dashboard {
+    text-align: center;
+    padding: 20px;
+    background-color: #f0f8ff;
+    color: #333;
+  }
+  
+  .govt-dashboard h1 {
+    font-size: 32px;
+    color: #0044cc;
+  }
+  
+  .govt-dashboard p {
+    font-size: 18px;
+  }
+  
+  .manage-section {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #e6f2ff;
+    border-radius: 8px;
+  }
+  
