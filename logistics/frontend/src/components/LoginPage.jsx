@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
+
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,9 +12,10 @@ function LoginPage() {
 
   // Predefined login details for each role
   const users = {
-    govt: { username: 'govtUser', password: 'govtPass123' },
+    govt: { username: 'adminUser', password: 'govtPass123' },
     privatePartner: { username: 'partnerUser', password: 'partnerPass123' },
     truckDriver: { username: 'driverUser', password: 'driverPass123' },
+    Manager: {username: 'ManagerUser', password: 'managerPass123'}
   };
 
   const handleSubmit = (e) => {
@@ -29,8 +31,13 @@ function LoginPage() {
         navigate('/govt-dashboard');
       } else if (role === 'privatePartner') {
         navigate('/private-partner-dashboard');
-      } else {
+      } 
+      else  if (role === 'truckDriver') {
+
         navigate('/truck-driver-dashboard');
+      }
+      else {
+        navigate('/manager-dashboard');
       }
     } else {
       // Set error message if credentials are incorrect
@@ -58,8 +65,9 @@ function LoginPage() {
         />
         <select value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="truckDriver">Truck Driver</option>
-          <option value="govt">Government</option>
-          <option value="privatePartner">Private Partner</option>
+          <option value="govt">Admin</option>
+          <option value="privatePartner">3PL Partner</option>
+          <option value="Manager">Manager</option>
         </select>
         <button type="submit">Login</button>
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}

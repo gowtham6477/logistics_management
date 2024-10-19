@@ -1,0 +1,24 @@
+.Manager-dashboard {
+    text-align: center;
+    padding: 20px;
+    background-color: #f7f2e0;
+    color: #333;
+  }
+  
+  .Manager-dashboard h1 {
+    font-size: 32px;
+    color: #28a745;
+  }
+  
+  .Manager-dashboard p {
+    font-size: 18px;
+  }
+  
+  .location-details {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #e6ffe6;
+    border-radius: 8px;
+  }
+  
