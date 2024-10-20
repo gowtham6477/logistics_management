@@ -1,0 +1,40 @@
+/* BackgroundLogin.css */
+.background-container {
+    background-image: url('https://img.freepik.com/free-photo/bright-yellow-truck-with-red-trailer-side-it_1340-32505.jpg?semt=ais_hybrid'); /* Replace 'your-image-path.jpg' with the actual image path */
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-button {
+    width: 120px; /* Fixed width for a smaller button */
+    padding: 10px; /* Uniform padding */
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    border-radius: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center the text inside the button */
+    transition: all 0.3s ease;
+    transform: scale(1);
+  }
+  
+  .login-button:hover {
+    background-color: #2980b9;
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+  }
+  
+  .login-button:active {
+    background-color: #1c5d85;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+  }
+  
