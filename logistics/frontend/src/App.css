@@ -26,94 +26,54 @@ html, body {
   align-items: center;
 }
 
-/* Stretch container to occupy full screen */
-.container {
+/* Main app container */
+.app-container {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  background-color: #fff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 0; /* Remove border radius to fill the entire screen */
 }
 
-/* Heading and text styling */
-h1, h2, h3 {
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-p {
-  color: #555;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  text-align: center;
-}
-
-/* Form and button styling */
-form {
+/* Header styles */
+.app-header {
   width: 100%;
-  max-width: 400px;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #D81D24;
+  color: white;
+  padding: 20px 20px 5px 20px; /* Further reduced bottom padding */
+  box-shadow: none; /* Remove any shadow that might create an illusion of a line */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: none; /* Ensure no border is applied */
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #007BFF;
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Spacing between the icon and title */
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px;
+}
+
+/* Title styling */
+.app-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  text-decoration: none; /* No underline */
+  border: none; /* No border around the text */
+  padding: 0; /* No padding */
+  color: white;
+}
+
+/* Optional: If you're using an anchor tag for title (like a link), add this */
+a {
+  text-decoration: none;
+  color: inherit;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-/* Form input fields */
-input, select {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-/* Utility classes for layout */
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.full-height {
-  height: 100vh; /* Full viewport height */
-}
-
-.text-center {
-  text-align: center;
-}
-
-.mt-20 {
-  margin-top: 20px;
-}
-
-/* Ensure that router container takes full height */
-.router-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f4f4f4;
 }
