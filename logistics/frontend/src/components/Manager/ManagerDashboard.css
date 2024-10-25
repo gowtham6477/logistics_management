@@ -1,3 +1,7 @@
+html, body, #root {
+  height: 100%; /* Set height for body and html to 100% */
+  margin: 0; /* Remove default margins */
+}
 .Manager-dashboard {
     text-align: center;
     padding: 20px;
@@ -8,6 +12,7 @@
   .Manager-dashboard h1 {
     font-size: 32px;
     color: #28a745;
+    height:100%;
   }
   
   .Manager-dashboard p {
@@ -22,3 +27,54 @@
     border-radius: 8px;
   }
   
+  /* ManagerDashboard.css */
+.manager-dashboard {
+  height: 100vh; /* Set the height to 100% of the viewport height */
+  margin: 0; /* Remove default margins */
+}
+
+.map-container {
+  height: calc(100vh - 80px); /* Make the map container fill the screen, leaving space for the header */
+  height: 100%;
+  width: 100%; /* Set width to 100% */
+}
+
+.location-details {
+  position: absolute; /* Position it absolutely */
+  top: 20px; /* Adjust as needed */
+  left: 20px; /* Adjust as needed */
+  background-color: white; /* Background for better visibility */
+  padding: 10px; /* Add padding */
+  border: 1px solid #ccc; /* Border for visibility */
+  border-radius: 5px; /* Rounded corners */
+  z-index: 1000; /* Ensure it appears on top of the map */
+}
+
+/* ManagerDashboard.css */
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.manager-dashboard {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto; /* Center the dashboard */
+}
+
+.map-container {
+  margin-bottom: 20px;
+}
+
+.location-details h2 {
+  font-size: 1.5em;
+  margin-bottom: 5px;
+}
+
+.location-details p {
+  font-size: 1.2em;
+}
+
+
