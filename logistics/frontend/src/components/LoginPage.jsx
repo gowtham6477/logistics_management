@@ -12,10 +12,10 @@ function LoginPage() {
 
   // Predefined login details for each role
   const users = {
-    govt: { username: 'adminUser', password: 'govtPass123' },
-    privatePartner: { username: 'partnerUser', password: 'partnerPass123' },
-    truckDriver: { username: 'driverUser', password: 'driverPass123' },
-    Manager: {username: 'ManagerUser', password: 'managerPass123'}
+    govt: { username: 'admin', password: '123' },
+    privatePartner: { username: 'partner', password: '123' },
+    truckDriver: { username: 'driver', password: '123' },
+    Manager: {username: 'manager', password: '123'}
   };
 
   const handleSubmit = (e) => {
