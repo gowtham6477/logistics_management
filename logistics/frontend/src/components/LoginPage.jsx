@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
-
+import axios from 'axios';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -10,37 +10,35 @@ function LoginPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  // Predefined login details for each role
-  const users = {
-    govt: { username: 'adminUser', password: 'govtPass123' },
-    privatePartner: { username: 'partnerUser', password: 'partnerPass123' },
-    truckDriver: { username: 'driverUser', password: 'driverPass123' },
-    Manager: {username: 'ManagerUser', password: 'managerPass123'}
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validate credentials based on the role selected
-    const selectedUser = users[role];
 
-    if (username === selectedUser.username && password === selectedUser.password) {
-      setErrorMessage(''); // Clear any previous error message
-      // Navigate to the respective dashboard based on the role
-      if (role === 'govt') {
-        navigate('/govt-dashboard');
-      } else if (role === 'privatePartner') {
-        navigate('/private-partner-dashboard');
-      } 
-      else  if (role === 'truckDriver') {
+    try {
+      // Send the login request to the backend
+      const response = await axios.post('http://localhost:5000/api/login', {
+        username,
+        password,
+        role,
+      });
 
-        navigate('/truck-driver-dashboard');
+      // Check for success and token
+      if (response.data.token) {
+        setErrorMessage(''); // Clear any previous error message
+        localStorage.setItem('token', response.data.token); // Save JWT token
+
+        // Navigate to the respective dashboard based on the role
+        if (role === 'govt') {
+          navigate('/govt-dashboard');
+        } else if (role === 'privatePartner') {
+          navigate('/private-partner-dashboard');
+        } else if (role === 'truckDriver') {
+          navigate('/truck-driver-dashboard');
+        } else {
+          navigate('/manager-dashboard');
+        }
       }
-      else {
-        navigate('/manager-dashboard');
-      }
-    } else {
-      // Set error message if credentials are incorrect
+    } catch (error) {
+      // Handle errors (e.g., wrong credentials)
       setErrorMessage('Invalid username or password. Please try again.');
     }
   };
