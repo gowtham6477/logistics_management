@@ -2,81 +2,89 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4; /* Light background for contrast */
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
 }
 
 /* Dashboard Container */
 .govt-dashboard {
   display: flex;
-  flex-direction: column;
+  flex-direction:column;
   align-items: center;
-  padding: 20px;
-  min-height: 100vh; /* Ensures the dashboard covers the full viewport height */
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  overflow:hidden; /* Allows scrolling within the container */
 }
 
 /* Map Container */
 .map-container {
-  width: 150%;
-  max-width: 1200px; /* Maximum width for larger screens */
-  height: 200vh; /* Height of the map */
-  border-radius: 8px; /* Rounded corners for the map */
-  overflow: hidden; /* Ensures no overflow from map */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  width: 100%;
+  height: 200vh; /* Adjusted map height */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Route Description Styles */
 .route-description {
-  margin-top: 20px; /* Space between map and description */
+  margin-top: 20px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
-  border-radius: 8px; /* Rounded corners for the description box */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-  width: 80%; /* Width of the description box */
-  max-width: 800px; /* Maximum width for larger screens */
-  text-align: center; /* Center text alignment */
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
 }
 
-/* Headings */
-.route-description h2 {
-  margin-bottom: 10px; /* Space below the heading */
-  font-size: 24px; /* Larger font size for heading */
-  color: #333; /* Dark color for better readability */
+/* Coordinates Block */
+.route-coordinates {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: rgba(245, 245, 245, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
 }
 
-/* Paragraphs */
-.route-description p {
-  margin: 5px 0; /* Margin for paragraphs */
-  font-size: 16px; /* Standard font size */
-  color: #666; /* Lighter color for secondary text */
+.route-description h2, .route-coordinates h3 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #333;
 }
 
-/* Error Message */
-.error-message {
-  color: red; /* Red color for error messages */
-  margin-top: 10px; /* Space above error messages */
+.route-description p, .route-coordinates p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #666;
 }
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .map-container {
-      height: 40vh; /* Reduced height for smaller screens */
+    height: 40vh; /* Reduced height for smaller screens */
   }
 
-  .route-description {
-      width: 90%; /* Increase width on smaller screens */
+  .route-description, .route-coordinates {
+    width: 90%;
   }
 }
 
 @media (max-width: 480px) {
-  .route-description {
-      padding: 15px; /* Reduced padding on very small screens */
+  .route-description, .route-coordinates {
+    padding: 15px;
   }
 
-  .route-description h2 {
-      font-size: 20px; /* Smaller heading size for small screens */
+  .route-description h2, .route-coordinates h3 {
+    font-size: 20px;
   }
 
-  .route-description p {
-      font-size: 14px; /* Smaller paragraph size for small screens */
+  .route-description p, .route-coordinates p {
+    font-size: 14px;
   }
 }

@@ -26,7 +26,7 @@ const truckIcon = new L.Icon({
 function LocationMarker({ currentPosition, destination }) {
   const map = useMap();
   useEffect(() => {
-    if (currentPosition) {
+    if (currentPosition && destination) {
       map.setView(currentPosition, 13);
       L.Routing.control({
         waypoints: [L.latLng(currentPosition), L.latLng(destination)],
@@ -43,7 +43,7 @@ function LocationMarker({ currentPosition, destination }) {
 
 function TruckDriverDashboard() {
   const [currentPosition, setCurrentPosition] = useState(null);
-  const [destinationPosition, setDestinationPosition] = useState([13.067439, 80.237617]); // Example destination (Chennai)
+  const [destinationPosition] = useState([13.067439, 80.237617]); // Example destination (Chennai)
   const [currentLocationName, setCurrentLocationName] = useState('');
   const [destinationName, setDestinationName] = useState('');
   const [error, setError] = useState(null);
@@ -54,7 +54,7 @@ function TruckDriverDashboard() {
     const reverseGeocode = async (lat, lon, setLocationName) => {
       try {
         const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=4f2042ea0a594d04b2ff0ebe32e3a718`);
-        const location = response.data.results[0].formatted;
+        const location = response.data.results[0]?.formatted || 'Unknown location';
         setLocationName(location);
       } catch (err) {
         setLocationName('Unknown location');
@@ -91,7 +91,7 @@ function TruckDriverDashboard() {
         <MapContainer
           center={currentPosition || [13.0827, 80.2707]}
           zoom={13}
-          style={{ height: '200vh', width: '150%' }} // Adjust height as necessary
+          style={{ height: '60vh', width: '100%' }} // Adjust height as necessary
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -106,6 +106,13 @@ function TruckDriverDashboard() {
         <h2>Route Details</h2>
         <p>Starting Location: {currentLocationName || 'Loading...'}</p>
         <p>Destination: {destinationName || 'Loading...'}</p>
+      </div>
+
+      {/* Coordinates Block */}
+      <div className="route-coordinates">
+        <h3>In Progress</h3>
+        <p>Starting Point: {currentPosition ? `${currentLocationName} (${currentPosition[0]}, ${currentPosition[1]})` : 'Loading...'}</p>
+        <p>Destination Point: {destinationName} ({destinationPosition[0]}, {destinationPosition[1]})</p>
       </div>
     </div>
   );
