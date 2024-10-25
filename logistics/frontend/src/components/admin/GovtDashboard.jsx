@@ -64,7 +64,7 @@ function GovtDashboard() {
 
     const reverseGeocode = async (lat, lon, setLocationName) => {
       try {
-        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=YOUR_API_KEY`);
+        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=4f2042ea0a594d04b2ff0ebe32e3a718 `);
         const location = response.data.results[0].formatted;
         setLocationName(location);
       } catch (err) {
@@ -106,16 +106,12 @@ function GovtDashboard() {
 
   return (
     <div className="govt-dashboard">
-      <h1>Government Dashboard</h1>
-      <p>Manage Private Partners and Truck Drivers</p>
-
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-
+      {/* Full-screen Map Container */}
       <div className="map-container">
         <MapContainer
           center={currentPosition || [13.0827, 80.2707]}
           zoom={13}
-          style={{ height: '400px', width: '100%' }}
+          style={{ height: '200vh', width: '200%' }} // Ensures the map takes up the entire viewport
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -124,56 +120,65 @@ function GovtDashboard() {
           <LocationMarker currentPosition={currentPosition} destination={destinationPosition} />
         </MapContainer>
       </div>
-
-      <div className="route-description">
-        <h2>Route Details</h2>
-        <p>Starting Location: {currentLocationName || 'Loading...'}</p>
-        <p>Destination: {destinationName || 'Loading...'}</p>
-      </div>
-
-      <div className="partner-driver-info">
-        <h2>Private Partners</h2>
-        {partners.map((partner) => (
-          <p key={partner._id}>{partner.name} - {partner.location}</p>
-        ))}
-
-        <h2>Truck Drivers</h2>
-        {drivers.map((driver) => (
-          <p key={driver._id}>{driver.name} - Current Location: {driver.currentLocation.join(', ')}</p>
-        ))}
-      </div>
-
-      <div className="truck-capacity-chart">
-        <h2>Truck Capacity Distribution</h2>
-        <PieChart width={400} height={400}>
-          <Pie
-            data={truckCapacityData}
-            cx={200}
-            cy={200}
-            outerRadius={150}
-            fill="#8884d8"
-            dataKey="value"
-            label
-          >
-            {truckCapacityData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend />
-        </PieChart>
-      </div>
-
-      <div className="truck-capacity-info">
-        <h2>Truck Capacity Information</h2>
-        <ul>
-          {truckCapacityData.map((truck, index) => (
-            <li key={index}>{truck.name}: {truck.value}% Capacity</li>
+  
+      {/* Scrollable Content Below the Map */}
+      <div className="content-container">
+        {/* Route Details */}
+        <div className="route-description">
+          <h2>Route Details</h2>
+          <p>Starting Location: {currentLocationName || 'Loading...'}</p>
+          <p>Destination: {destinationName || 'Loading...'}</p>
+        </div>
+  
+        {/* Truck Capacity and Drivers/Partners Info */}
+        <div className="truck-capacity-chart">
+          <h2>Truck Capacity Distribution</h2>
+          <PieChart width={400} height={400}>
+            <Pie
+              data={truckCapacityData}
+              cx={200}
+              cy={200}
+              outerRadius={150}
+              fill="#8884d8"
+              dataKey="value"
+              label
+            >
+              {truckCapacityData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        </div>
+  
+        {/* Driver and Partner Information */}
+        <div className="partner-driver-info">
+          <h2>Private Partners</h2>
+          {partners.map((partner) => (
+            <p key={partner._id}>{partner.name} - {partner.location}</p>
           ))}
-        </ul>
+  
+          <h2>Truck Drivers</h2>
+          {drivers.map((driver) => (
+            <p key={driver._id}>{driver.name} - Current Location: {driver.currentLocation.join(', ')}</p>
+          ))}
+        </div>
+  
+        {/* Truck Capacity Information */}
+        <div className="truck-capacity-info">
+          <h2>Truck Capacity Information</h2>
+          <ul>
+            {truckCapacityData.map((truck, index) => (
+              <li key={index}>{truck.name}: {truck.value}% Capacity</li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
+  
+  
 }
 
 export default GovtDashboard;

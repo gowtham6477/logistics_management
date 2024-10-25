@@ -1,32 +1,21 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-
-dotenv.config();
+const express = require('express');
+const connectDB = require('./config/config');
+const Item = require('./models/item');
+require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+connectDB();
 
-// Middleware
-app.use(express.json());
-
-// Sample route for the root
-app.get('/', (req, res) => {
-  res.send('Welcome to the Logistics Management API');
+// Route to retrieve all items from the MongoDB collection
+app.get('/api/items', async (req, res) => {
+  try {
+    const items = await Item.find(); // Fetches all documents in the 'items' collection
+    res.json(items);
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
-// Connect to MongoDB
-mongoose
-  .connect('mongodb://localhost:27017/NewCustomer', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Database connection error:', err);
-  });
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
