@@ -5,11 +5,14 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
-import './GovtDashboard.css'; // Ensure this CSS file exists with styles below
+import DriverForm from './DriverForm';
+import PartnerForm from './PartnerForm';
+import ManagerForm from './ManagerForm';
+import './GovtDashboard.css';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import truckIconImage from './images/truck.jpg'; // Ensure correct path to truck image
+import truckIconImage from './images/truck.jpg';
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -44,27 +47,30 @@ function LocationMarker({ currentPosition, destination }) {
 
 function GovtDashboard() {
   const [currentPosition, setCurrentPosition] = useState(null);
-  const [destinationPosition, setDestinationPosition] = useState([13.067439, 80.237617]); // Example destination (Chennai)
+  const [destinationPosition, setDestinationPosition] = useState([13.067439, 80.237617]);
   const [currentLocationName, setCurrentLocationName] = useState('');
   const [destinationName, setDestinationName] = useState('');
   const [partners, setPartners] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [formType, setFormType] = useState('Driver');
   const [truckCapacityData, setTruckCapacityData] = useState([
-    { name: 'Truck 1', value: 40 },
-    { name: 'Truck 2', value: 30 },
-    { name: 'Truck 3', value: 20 },
-    { name: 'Truck 4', value: 10 }
+    { name: 'Available', value: 60 },
+    { name: 'Occupied', value: 40 }
   ]);
 
   const COLORS = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'];
 
-  useEffect(() => {
-    const defaultPosition = [13.0827, 80.2707]; // Default (Chennai)
+  const openForm = (type) => {
+    setFormType(type);
+    setShowModal(true);
+  };
 
+  useEffect(() => {
     const reverseGeocode = async (lat, lon, setLocationName) => {
       try {
-        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=4f2042ea0a594d04b2ff0ebe32e3a718 `);
+        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=4f2042ea0a594d04b2ff0ebe32e3a718`);
         const location = response.data.results[0].formatted;
         setLocationName(location);
       } catch (err) {
@@ -82,15 +88,11 @@ function GovtDashboard() {
         },
         (err) => {
           setError(`Geolocation Error: ${err.message}`);
-          setCurrentPosition(defaultPosition);
-          reverseGeocode(defaultPosition[0], defaultPosition[1], setCurrentLocationName);
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     } else {
       setError('Geolocation is not supported by this browser.');
-      setCurrentPosition(defaultPosition);
-      reverseGeocode(defaultPosition[0], defaultPosition[1], setCurrentLocationName);
     }
 
     reverseGeocode(destinationPosition[0], destinationPosition[1], setDestinationName);
@@ -106,41 +108,39 @@ function GovtDashboard() {
 
   return (
     <div className="govt-dashboard">
-      {/* Full-screen Map Container */}
-      <div className="map-container">
-        <MapContainer
-          center={currentPosition || [13.0827, 80.2707]}
-          zoom={13}
-          style={{ height: '200vh', width: '200%' }} // Ensures the map takes up the entire viewport
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
+      <MapContainer
+        center={currentPosition || [13.0827, 80.2707]}
+        zoom={13}
+        style={{ height: '100vh', width: '100%' }}
+        className="map-container"
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        />
+        {currentPosition && (
           <LocationMarker currentPosition={currentPosition} destination={destinationPosition} />
-        </MapContainer>
-      </div>
-  
-      {/* Scrollable Content Below the Map */}
-      <div className="content-container">
-        {/* Route Details */}
+        )}
+      </MapContainer>
+
+      <div className="info-container">
         <div className="route-description">
-          <h2>Route Details</h2>
-          <p>Starting Location: {currentLocationName || 'Loading...'}</p>
-          <p>Destination: {destinationName || 'Loading...'}</p>
+          <h2>Route Description</h2>
+          <p><strong>Current Location:</strong> {currentLocationName || 'Fetching...'}</p>
+          <p><strong>Destination:</strong> {destinationName || 'Fetching...'}</p>
         </div>
-  
-        {/* Truck Capacity and Drivers/Partners Info */}
-        <div className="truck-capacity-chart">
-          <h2>Truck Capacity Distribution</h2>
-          <PieChart width={400} height={400}>
+
+        <div className="chart-container">
+          <h3>Truck Capacity Distribution</h3>
+          <PieChart width={300} height={300}>
             <Pie
               data={truckCapacityData}
-              cx={200}
-              cy={200}
-              outerRadius={150}
-              fill="#8884d8"
               dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              fill="#8884d8"
               label
             >
               {truckCapacityData.map((entry, index) => (
@@ -150,35 +150,32 @@ function GovtDashboard() {
             <Tooltip />
             <Legend />
           </PieChart>
-        </div>
-  
-        {/* Driver and Partner Information */}
-        <div className="partner-driver-info">
-          <h2>Private Partners</h2>
-          {partners.map((partner) => (
-            <p key={partner._id}>{partner.name} - {partner.location}</p>
-          ))}
-  
-          <h2>Truck Drivers</h2>
-          {drivers.map((driver) => (
-            <p key={driver._id}>{driver.name} - Current Location: {driver.currentLocation.join(', ')}</p>
-          ))}
-        </div>
-  
-        {/* Truck Capacity Information */}
-        <div className="truck-capacity-info">
-          <h2>Truck Capacity Information</h2>
-          <ul>
-            {truckCapacityData.map((truck, index) => (
-              <li key={index}>{truck.name}: {truck.value}% Capacity</li>
-            ))}
-          </ul>
+          <p><strong>Truck Capacity Analysis:</strong> This pie chart shows the current distribution of truck capacities for efficient management.</p>
         </div>
       </div>
+
+      <button className="popup-button" onClick={() => openForm('Driver')}>Open Registration Form</button>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>{formType} Registration</h2>
+            <button onClick={() => setShowModal(false)} className="close-button">&times;</button>
+            {formType === 'Driver' && <DriverForm />}
+            {formType === 'Partner' && <PartnerForm />}
+            {formType === 'Manager' && <ManagerForm />}
+            <div className="form-selector">
+              <button onClick={() => openForm('Driver')}>Driver Registration</button>
+              <button onClick={() => openForm('Partner')}>Partner Registration</button>
+              <button onClick={() => openForm('Manager')}>Manager Registration</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {error && <p className="error">{error}</p>}
     </div>
   );
-  
-  
 }
 
 export default GovtDashboard;
