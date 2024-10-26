@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs'); // Import bcrypt for password hashing and co
 require('dotenv').config(); // Load environment variables from .env
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
@@ -29,24 +29,37 @@ app.post('/api/login', async (req, res) => {
 
   try {
     // Fetch the user from the database
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username: { $regex: new RegExp('^' + username + '$', 'i') } });
+    console.log('User found:', user);
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
     // Check if the password is hashed or plaintext
-    const isPasswordValid = user.password.startsWith('$2b$') // Assuming bcrypt hashes start with $2b$
-      ? await bcrypt.compare(password, user.password) // For hashed passwords
-      : password === user.password; // For plaintext passwords
+    let isPasswordValid;
 
-    if (isPasswordValid && user.role === role) {
-      res.status(200).json({ message: 'Login successful', role: user.role });
+    // Determine if the password is hashed (starts with $2b$)
+    if (user.password.startsWith('$2b$')) {
+      // Compare the provided password with the hashed password
+      isPasswordValid = await bcrypt.compare(password, user.password);
     } else {
-      res.status(401).json({ message: 'Invalid username or password' });
+      // For plaintext password
+      isPasswordValid = password === user.password;
+    }
+
+    // Validate role and password
+    if (isPasswordValid && user.role.toLowerCase() === role.toLowerCase()) {
+      return res.status(200).json({
+        message: 'Login successful',
+        role: user.role,
+        token: 'fake-jwt-token' // Assuming JWT integration in the future
+      });
+    } else {
+      return res.status(401).json({ message: 'Invalid username or password' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err });
+    return res.status(500).json({ message: 'Server error', error: err });
   }
 });
 

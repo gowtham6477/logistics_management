@@ -27,7 +27,7 @@ function LoginPage() {
         localStorage.setItem('token', response.data.token); // Save JWT token
 
         // Navigate to the respective dashboard based on the role
-        if (role === 'govt') {
+        if (role === 'Admin') {
           navigate('/govt-dashboard');
         } else if (role === 'privatePartner') {
           navigate('/private-partner-dashboard');
@@ -36,6 +36,9 @@ function LoginPage() {
         } else {
           navigate('/manager-dashboard');
         }
+      } else {
+        // If no token, it means login failed
+        setErrorMessage('Invalid username or password. Please try again.');
       }
     } catch (error) {
       // Handle errors (e.g., wrong credentials)
@@ -63,9 +66,9 @@ function LoginPage() {
         />
         <select value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="truckDriver">Truck Driver</option>
-          <option value="govt">Admin</option>
+          <option value="Admin">Admin</option>
           <option value="privatePartner">3PL Partner</option>
-          <option value="Manager">Manager</option>
+          <option value="manager">Manager</option>
         </select>
         <button type="submit">Login</button>
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
