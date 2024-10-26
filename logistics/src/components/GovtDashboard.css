@@ -1,0 +1,56 @@
+/* GovtDashboard.css */
+
+/* Ensure the dashboard takes up the full viewport height */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.govt-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 100% of the viewport height */
+  width: 100vw;  /* 100% of the viewport width */
+}
+
+.govt-dashboard h1 {
+  text-align: center;
+  color: #fff;
+  margin-top: 0;
+  background-color: #2e7d32; /* Dark green color */
+  padding: 20px;
+}
+
+.govt-dashboard p {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.map-container {
+  flex: 1; /* Allow the map container to grow and take up the remaining space */
+  position: relative;
+  width: 100%;
+  height: calc(100% - 80px); /* Adjust based on header height */
+}
+
+.leaflet-container {
+  height: 100%; /* Make sure the map takes up full height of the map-container */
+  width: 100%;
+}
+
+/* Add some simple responsive styling for smaller screens */
+@media (max-width: 768px) {
+  .govt-dashboard h1 {
+    font-size: 24px;
+    padding: 15px;
+  }
+  
+  .govt-dashboard p {
+    font-size: 16px;
+  }
+}

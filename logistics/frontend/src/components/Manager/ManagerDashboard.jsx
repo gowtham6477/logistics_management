@@ -104,6 +104,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import './ManagerDashboard.css';
 
 import truckIconImage from './images/truck.jpg';
@@ -145,14 +146,39 @@ function ManagerDashboard() {
   const [currentPosition, setCurrentPosition] = useState(null);
   const [destinationPosition, setDestinationPosition] = useState([13.067439, 80.237617]); // Sample destination
   const [error, setError] = useState(null);
+  const [currentAddress, setCurrentAddress] = useState('');
+  const [destinationAddress, setDestinationAddress] = useState('');
+
+  // Truck capacity data (for demonstration purposes)
+  const truckCapacity = {
+    totalCapacity: 1000, // Total capacity in cubic meters
+    occupiedSpace: 600,   // Occupied space in cubic meters
+  };
+
+  const availableSpace = truckCapacity.totalCapacity - truckCapacity.occupiedSpace;
+
+  // Pie chart data
+  const pieData = [
+    { name: 'Occupied Space', value: truckCapacity.occupiedSpace },
+    { name: 'Available Space', value: availableSpace },
+  ];
+
+  const COLORS = ['#FF6384', '#36A2EB'];
 
   useEffect(() => {
     const defaultPosition = [13.0827, 80.2707]; // Default position if geolocation fails
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentPosition([latitude, longitude]);
+
+          // Reverse geocoding for current position
+          const currentLocResponse = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+          );
+          const currentLocData = await currentLocResponse.json();
+          setCurrentAddress(currentLocData.display_name);
         },
         (err) => {
           setError(`Geolocation Error: ${err.message}`);
@@ -166,6 +192,19 @@ function ManagerDashboard() {
     }
   }, []);
 
+  // Reverse geocoding for destination position
+  useEffect(() => {
+    const fetchDestinationAddress = async () => {
+      const destLocResponse = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${destinationPosition[0]}&lon=${destinationPosition[1]}&format=json`
+      );
+      const destLocData = await destLocResponse.json();
+      setDestinationAddress(destLocData.display_name);
+    };
+
+    fetchDestinationAddress();
+  }, [destinationPosition]);
+
   return (
     <div className="manager-dashboard">
       <h1>Manager Dashboard</h1>
@@ -173,7 +212,7 @@ function ManagerDashboard() {
 
       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
 
-      <div className="map-container" style={{ height: '400px', width: '100%' }}>
+      <div className="map-container" style={{ height: '800px', width: '100%' }}>
         <MapContainer
           center={currentPosition || [13.0827, 80.2707]}
           zoom={13}
@@ -190,13 +229,38 @@ function ManagerDashboard() {
       {currentPosition && (
         <div className="location-details" style={{ marginTop: '20px' }}>
           <h2>Live Location</h2>
-          <p>Latitude: {currentPosition[0]}</p>
-          <p>Longitude: {currentPosition[1]}</p>
+          <p>Address: {currentAddress}</p>
           <h2>Destination</h2>
-          <p>Latitude: {destinationPosition[0]}</p>
-          <p>Longitude: {destinationPosition[1]}</p>
+          <p>Address: {destinationAddress}</p>
         </div>
       )}
+
+      <div className="capacity-chart">
+        <h2>Truck Capacity</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={pieData}
+              cx="50%"
+              cy="50%"
+              innerRadius={60}
+              outerRadius={80}
+              fill="#8884d8"
+              paddingAngle={5}
+              dataKey="value"
+            >
+              {pieData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index]} />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+        <div className="capacity-info">
+          <p>Total Capacity: {truckCapacity.totalCapacity} m³</p>
+          <p>Occupied Space: {truckCapacity.occupiedSpace} m³</p>
+          <p>Available Space: {availableSpace} m³</p>
+        </div>
+      </div>
     </div>
   );
 }
