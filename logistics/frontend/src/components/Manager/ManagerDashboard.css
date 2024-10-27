@@ -1,51 +1,110 @@
 /* ManagerDashboard.css */
-.manager-dashboard {
+
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font-family: Arial, sans-serif;
-  padding: 20px;
   background-color: #f4f4f4;
 }
 
+/* Dashboard Container */
+.manager-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full height for the view */
+  padding: 20px;
+}
+
+/* Header Styles */
 h1 {
+  margin-bottom: 10px;
   color: #333;
 }
 
-h2 {
-  color: #2c3e50;
+p {
+  margin-bottom: 15px;
 }
 
+/* Error Message */
+.error-message {
+  color: red;
+  margin-bottom: 20px;
+}
+
+/* Dashboard Container for Map and Info */
+.dashboard-container {
+  display: flex;
+  flex: 1; /* Allow to grow and fill remaining space */
+  overflow: hidden; /* Hide overflow to avoid nested scrolling */
+}
+
+/* Map Container */
 .map-container {
-  margin-bottom: 20px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 200vh;
-  width :200%;
+  flex: 2; /* Map takes more space */
+  margin-right: 20px; /* Space between map and info */
 }
 
-.location-details {
-  background-color: #ffffff;
-  border: 1px solid #ccc;
+/* Info Container */
+.info-container {
+  flex: 1; /* Info container */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allow vertical scrolling if necessary */
+  background: white;
   border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
+  padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Location Details */
+.location-details,
+.route-description,
+.capacity-chart,
+.drivers-table {
+  margin-bottom: 20px;
+}
+
+/* Truck Capacity Chart */
 .capacity-chart {
-  background-color: #ffffff;
-  border: 1px solid #ccc;
+  background: #fff;
   border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+/* Drivers Table */
+.drivers-table {
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Responsive Container for Pie Chart */
+.capacity-info-details {
+  margin-top: 10px;
   text-align: center;
-}
-
-.capacity-info p {
-  margin: 5px 0;
-  font-weight: bold;
-}
-
-.capacity-chart canvas {
-  max-width: 100%;
-  height: auto;
 }
