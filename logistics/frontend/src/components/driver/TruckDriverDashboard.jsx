@@ -43,6 +43,7 @@ function LocationMarker({ currentPosition, destination }) {
       }).addTo(map);
     }
   }, [currentPosition, destination, map]);
+  
   return currentPosition === null ? null : (
     <Marker position={currentPosition} icon={truckIcon}>
       <Popup>You are here</Popup>
@@ -56,16 +57,21 @@ function TruckDriverDashboard() {
   const [currentLocationName, setCurrentLocationName] = useState('');
   const [destinationName, setDestinationName] = useState('');
   const [error, setError] = useState(null);
-
+  
   // Sample data for the pie chart
   const [goodsData] = useState({
     labels: ['Glass', 'Electronics', 'Clothing', 'Furniture'],
     datasets: [{
       data: [25, 35, 20, 20], // Example values for each good type
       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
     }]
   });
+
+  const truckCapacityData = [
+    { name: 'Available', value: 60 },
+    { name: 'Occupied', value: 40 }
+  ];
 
   useEffect(() => {
     const defaultPosition = [13.0827, 80.2707]; // Default (Chennai)
@@ -141,7 +147,20 @@ function TruckDriverDashboard() {
         <div className="pie-chart-container">
           <h3>Goods Stored in Truck</h3>
           <Pie data={goodsData} />
-        </div>
+          </div>
+          <div className="pie-chart-container2">
+          <h3>Truck Capacity Distribution</h3>
+          <Pie
+            data={{
+              labels: truckCapacityData.map(item => item.name),
+              datasets: [{
+                data: truckCapacityData.map(item => item.value),
+                backgroundColor: ['#FF6384', '#36A2EB'],
+                hoverBackgroundColor: ['#FF6384', '#36A2EB']
+              }]
+            }}
+            />
+          </div>
       </div>
     </div>
   );
