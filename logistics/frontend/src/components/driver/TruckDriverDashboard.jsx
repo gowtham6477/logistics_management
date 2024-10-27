@@ -3,12 +3,21 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import axios from 'axios';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import 'leaflet-routing-machine';
+import { Pie } from 'react-chartjs-2'; // Import Pie chart from Chart.js
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from 'chart.js'; // Import necessary Chart.js components
 import './TruckDriverDashboard.css'; // Ensure this CSS file exists with styles below
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import truckIconImage from './images/truck.jpg'; // Ensure correct path to truck image
+
+// Register Chart.js components
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -47,6 +56,16 @@ function TruckDriverDashboard() {
   const [currentLocationName, setCurrentLocationName] = useState('');
   const [destinationName, setDestinationName] = useState('');
   const [error, setError] = useState(null);
+
+  // Sample data for the pie chart
+  const [goodsData] = useState({
+    labels: ['Glass', 'Electronics', 'Clothing', 'Furniture'],
+    datasets: [{
+      data: [25, 35, 20, 20], // Example values for each good type
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+    }]
+  });
 
   useEffect(() => {
     const defaultPosition = [13.0827, 80.2707]; // Default (Chennai)
@@ -87,11 +106,12 @@ function TruckDriverDashboard() {
 
   return (
     <div className="govt-dashboard">
+      {/* Map Section */}
       <div className="map-container">
         <MapContainer
           center={currentPosition || [13.0827, 80.2707]}
           zoom={13}
-          style={{ height: '60vh', width: '100%' }} // Adjust height as necessary
+          style={{ height: '100%', width: '100%' }}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -101,18 +121,27 @@ function TruckDriverDashboard() {
         </MapContainer>
       </div>
 
-      {/* Route Description */}
-      <div className="route-description">
-        <h2>Route Details</h2>
-        <p>Starting Location: {currentLocationName || 'Loading...'}</p>
-        <p>Destination: {destinationName || 'Loading...'}</p>
-      </div>
+      {/* Details Section */}
+      <div className="details-container">
+        {/* Route Description */}
+        <div className="route-description">
+          <h2>Route Details</h2>
+          <p>Starting Location: {currentLocationName || 'Loading...'}</p>
+          <p>Destination: {destinationName || 'Loading...'}</p>
+        </div>
 
-      {/* Coordinates Block */}
-      <div className="route-coordinates">
-        <h3>In Progress</h3>
-        <p>Starting Point: {currentPosition ? `${currentLocationName} (${currentPosition[0]}, ${currentPosition[1]})` : 'Loading...'}</p>
-        <p>Destination Point: {destinationName} ({destinationPosition[0]}, {destinationPosition[1]})</p>
+        {/* Coordinates Block */}
+        <div className="route-coordinates">
+          <h3>In Progress</h3>
+          <p>Starting Point: {currentPosition ? `${currentLocationName} (${currentPosition[0]}, ${currentPosition[1]})` : 'Loading...'}</p>
+          <p>Destination Point: {destinationName} ({destinationPosition[0]}, {destinationPosition[1]})</p>
+        </div>
+
+        {/* Pie Chart Section */}
+        <div className="pie-chart-container">
+          <h3>Goods Stored in Truck</h3>
+          <Pie data={goodsData} />
+        </div>
       </div>
     </div>
   );
