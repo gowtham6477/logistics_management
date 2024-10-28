@@ -5,37 +5,44 @@
   font-family: 'Arial', sans-serif;
 }
 
+body {
+  overflow-y: auto; /* Allow global scrolling */
+}
+
 .map-container {
-  height: 100vh; /* Keep the map full height */
+  height: 50vh; /* Reduced height for the map */
   width: 100%;
-  position: absolute; /* Absolute positioning for the map */
-  top: 0;
-  left: 0;
-  z-index: 1; /* Place map behind other elements */
+  z-index: 0;
 }
 
 .govt-dashboard {
-  position: relative;
-  height: 100vh; /* Full height for the dashboard */
-  overflow-y: auto; /* Enable scrolling for the dashboard */
-  padding: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
 .info-container {
   display: flex;
-  position: relative; /* Change to relative so it's positioned on top of the map */
-  z-index: 2; /* Higher z-index to sit above the map */
   width: 100%;
+  gap: 20px;
   padding: 15px;
   background: rgba(255, 255, 255, 0.8);
+  flex-direction: row;
   justify-content: space-between;
-  margin-top: 10px; /* Add margin to avoid overlap with the top */
+  align-items: flex-start;
 }
 
-.route-description, .chart-container {
-  width: 45%;
+.route-description {
+  width: 55%; /* Adjusted width for route description */
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chart-container {
+  width: 40%; /* Adjusted width for pie chart */
   padding: 15px;
   background-color: #fff;
   border-radius: 8px;
@@ -43,9 +50,6 @@
 }
 
 .popup-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
   background-color: #007bff;
   color: #fff;
   padding: 10px 20px;
@@ -53,7 +57,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  z-index: 3; /* Make sure button is above the map */
+  margin-top: 20px;
 }
 
 .popup-button:hover {
@@ -70,7 +74,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 4;
+  z-index: 10; /* High z-index to sit above map and other elements */
 }
 
 .modal-content {
@@ -80,6 +84,8 @@
   width: 400px;
   max-width: 90%;
   text-align: center;
+  position: relative;
+  z-index: 11;
 }
 
 .close-button {
