@@ -1,5 +1,3 @@
-// models/User.js
-
 const mongoose = require('mongoose');
 
 // Define the User schema
@@ -20,6 +18,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// Create and export the User model
-const User = mongoose.model('User', userSchema);
+// Create and export the User model, specifying the collection name as 'login--page'
+const User = mongoose.model('User', userSchema, 'login---page');
+
 module.exports = User;
